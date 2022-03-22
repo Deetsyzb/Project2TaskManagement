@@ -1,0 +1,130 @@
+<%- include('header'); -%>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  google.charts.load('current', {packages: ['corechart']});
+  google.charts.load('current', {'packages':['table']});
+  google.charts.setOnLoadCallback(drawTable);
+  google.charts.setOnLoadCallback(drawChart);
+  google.charts.setOnLoadCallback(drawChart2);
+    function drawChart() {
+      // Define the chart to be drawn.
+      var array = `<%- JSON.stringify(gBarData) %>`;
+      var data = google.visualization.arrayToDataTable(JSON.parse(array)    
+      );
+
+      var options = { 
+        title : "Project involvement",
+        width: 600,
+        height: 400,
+        legend: { position: 'top', maxLines: 3 },
+        bar: { groupWidth: '75%' },
+        isStacked: true
+      };
+      // Instantiate and draw the chart.
+      var chart = new google.visualization.BarChart(document.getElementById('userBarChart'));
+      chart.draw(data, options);
+    }
+        function drawChart2() {
+      // Define the chart to be drawn.
+      var array = `<%- JSON.stringify(gPieData) %>`;
+      var data = google.visualization.arrayToDataTable(JSON.parse(array)    
+      );
+
+      var options = { 
+        title : "Tasks of current user",
+        width: 600,
+        height: 400,
+        legend: { position: 'top', maxLines: 3 },
+        bar: { groupWidth: '75%' },
+        
+      };
+      // Instantiate and draw the chart.
+      var chart = new google.visualization.PieChart(document.getElementById('userTaskPieChart'));
+      chart.draw(data, options);
+    }
+     function drawTable() {
+      var array = `<%- JSON.stringify(gTableData) %>`;
+      var data = google.visualization.arrayToDataTable(JSON.parse(array)    
+      );
+
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+      }
+</script>
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="http://localhost:3001/">Logout</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:3001/overview">Overview</a>
+        </li>
+    </div>
+  </div>
+</nav>
+<div> 
+<h1> <%= username %> </h1>
+  <h2><%= new Date() %></h2>
+
+  
+  <div id = "table_div"></div>
+
+  <table class="table">
+      <tr>
+        <td><div id="userBarChart" style="border: 1px solid #ccc"></div></td>
+        <td><div id="userTaskPieChart" style="border: 1px solid #ccc"></div></td>
+      </tr>
+    </table>
+  
+
+<form action="/app" method="POST" class="row g-3">
+<div class="col-md-6">
+  <label  class="label" for="actlabel">Tasks</label> <br>
+  <label id="actlabel" for="Activity" class="form-label">Activity Name</label>
+    <input class="form-control" id="Activity" name="task" required>  
+    <label for="taskD" class="form-label">Task Duration</label>
+    <select id="taskD" class="form-select" name = "task_duration">
+      <option selected>Choose...</option>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option> 
+  </select>
+   <label id="actlabel" for="projID" class="form-label">Project Name</label>
+    <input class="form-control" id="projID" name="project_id"> 
+</div>
+
+<div class ="col-md-4">
+ <label  class="label" for="durlabel">Blockers</label> <br>
+  <label id="durlabel" for="Blocker" class="form-label">Blocker Name</label>
+<input class="form-control" id="Blocker" name="blocker" required>  
+  
+
+  <label for="blockerD" class="form-label">Blocker Duration</label>
+<select id="blockerD" class="form-select" name = "blocker_duration">
+      <option selected>Choose...</option>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option> 
+  </select>
+</div>
+  
+
+<input class="btn btn-primary" type="submit" value=Submit> 
+
+</form>
+<%- include('footer'); -%>
